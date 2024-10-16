@@ -1,0 +1,38 @@
+-> Read Chapter 1 from Computer Systems: A Programmer’s
+Perspective.
+http://csapp.cs.cmu.edu/2e/ch1-preview.pdf
+
+-> Discuss two things you find particularly interesting.
+
+1:  Storage Hiearchy can be seen as a many levels of caches, each
+    pointing to the next bigger stoarge component. The thing I find
+    particularly interesting about this is that I have never looked
+    at i.e the Main Memory as a cache to local secondary storage, the
+    local disks as caches to remote secondary storage and so on.
+
+    Before reading this Chapter, I have always looked at them as
+    individual pieces of storage, without the mentioned connection,
+    showing that getting a deeper understanding of caches is of
+    utmost importance if you truly want to have an idea of how
+    computer systems work - and how to exploit their behavior.
+
+    The cache-connectivity of Regs-L1-L2-L3-Main Memory however
+    I already knew about.
+
+
+2:  Many things in Computers can be seen as abstractions of other
+    things.
+
+    For example, files can be seen as abstractions of I/O devices,
+    virtual memory is just an abstraction of main memory in combination
+    with I/O devices, and processes are abstractions of processors
+    as well as the aforementioned main memory and I/O devices.
+
+    This concept however is not limited to the computer system itself,
+    as it can be applied to programming languages in the context of
+    function prototypes or class declarations in Java and C respectively
+
+    I was not aware of the magnitude of importance of abstractions, 
+    which is why I found this topic interesting. 
+
+    

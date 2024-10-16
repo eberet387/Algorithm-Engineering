@@ -1,0 +1,37 @@
+-> Select one slide from the lecture, research more about the topic, 
+and report on it.
+
+I've decided to select slide 16, namely "Estimating π with 
+Numerical Integration"
+
+The history of π and it's approximations dates back to ancient
+Babylonians, which approximated π to equal 3, almost 4000 years
+ago.
+
+Knowing that the quest to find the true value of π dates back to
+multiple thousands of years ago, there is certainly no wonder that
+the methods of approximation have improved over the years.
+
+The method stated in slide 16 uses numerical integration making use of
+Riemann sums, developed by the German mathematician Bernhard Riamann
+(1826-1866). Its usage was never intended to be a way of estimating π,
+rather as a way to approximate the value of integrals. Thus, there is
+no exact credited person for this π-estimation-approach.
+
+Since the Integral from 0 to 1 of the Riemann sums is equal to π/4,
+this means that we could theoretically compute the approximation of π 
+as close to π's real value as we wanted to, by splitting and summing up
+as many even-length slices of the function f(x) = 1/(1+x*x) within the
+range of 0 to 1 as we would need for the preferred calculation preciseness.
+
+*Why is the integral of 1/(1+x*x) = π/4?
+-> as F(x) = arctan(x) + C
+-> the integral of arctan(x) = π/4
+
+Furthermore, this method can also be referred to as the midpoint Riemann sum,
+since we are using the middle of the length of our segments to calculate
+the height needed for each rectangle that we split the function into.
+
+Sources:
+https://www.exploratorium.edu/pi/history-of-pi
+https://brilliant.org/wiki/riemann-sums/

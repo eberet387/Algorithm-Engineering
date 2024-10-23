@@ -1,0 +1,40 @@
+-> Explain in detail the figure Performance gains after Moore’s
+law ends. 
+
+The performance gain trend of Moore's law (doubling the 
+number of transistors on computer chips every 2 years) will
+most likely come to an end soon, as further miniaturization
+gets more and more costly. The figure tells the reader that
+after Moore's law has stopped, most of the performance gains
+are deemed to be made by the "Top" of the computing stack,
+namely software, algorithm and hardware architecture, as 
+opposed to the "Bottom" - through new and advanced
+semiconductor technology.
+
+On the software-side, performance gains will be made through
+optimization, by reducing inefficiencies in the form of bloat
+for example, making sure that everything is stored cache-
+friendly, and exploiting certain hardware features like paralellisms, tailoring the software more to the machine
+it operates on. The figure calls this procedure "Software
+performance engineering"
+
+Algorithms on the other hand will also play a big role in
+improving computing power, as newer Algorithms will be 
+enhancing problem-solving efficiency and scalability by reducing
+time- and space-complexity - enabling the computer to perform 
+calculations or simulations faster through new problem domains
+and machine models as an example.
+
+A big opportunity of hardware architecture optimization, as the
+figure describes, is hardware streamlining by simplifying 
+the cores of processors, enabling more cores to fit onto the same
+chip and focusing on reducing unnecessary hardware funcionality
+for the desired domain, which is also called domain specialization.
+
+All in all, the future computing power improvements will be more
+sporadic as we can not rely on Moore's law to last forever, as
+miniaturization will be subject to diminishing return over time. 
+Hence, noticable performance gains will shift to the top of the 
+computing stack and will be more sporadic and uneven, as big
+breakthroughs in algorithms, software and hardware architecture
+cannot be foreseen.  

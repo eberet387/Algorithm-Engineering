@@ -1,0 +1,15 @@
+->  When run with one thread per logical core, threads from
+    Listing 3.1 display their numbers randomly, while those from
+    Listing 3.2 show them in the same order. Explain why.
+
+Once the threads are needed in Listing 3.1, the operating system has to
+schedule them, after which they compete for the same print statement.
+Since the workload of each thread is the same (just the print statement),
+the threads that get scheduled first, get to print first. Because the
+scheduling can't be forseen, the output seems random.
+
+In Listing 3.2, this same sort of thread scheduling is also happening.
+However, since the threads have to calculate different fib-numbers first,
+the workload of the various fib-calculations outweigh the randomness in
+scheduling, thus resulting in the same order of output - the ones with
+least work load (smallest fib numbers) get to print first.

@@ -1,0 +1,27 @@
+->  What do you think, does the code snippet in Listing 3.10 use
+    the cores efficiently, why yes, why no. Consider also the
+    variable size in your argumentation.
+
+In my opinion, the code snippet uses the cores efficiently, since the
+collapse(2) keyword effectively parallelizes the nested for-loops by
+dsitributing the workload and dividing the 2d grid across threads evenly.
+It is also quite good that both cases of the switch statement have
+evenly balanced workloads, creating less room for some threads being
+faster than others.
+
+For smaller sizers however, the workload of the threads get distributed
+more and more unevenly, increasing the amount of thread-idling that is
+happening when one threads are waiting for the last threads to finish
+their work substantially. Since the work balancing overhead stays the same,
+the actual ratio of overhead to workload increases, which is also rather
+bad. Due to the fact that all the threads have to complete their work
+before a new generation is able to be computed, the increasingly larger 
+thread-idling becomes a problem not just once but every time a new
+generation is formed.
+
+Since the problems occuring in smaller sizes are of close to no importance
+in larger sizes, i would still argue that the code is generally using
+the cores efficiently. 
+(Since the Workload gets spaced more evenly, the overhead-to-work ratio
+decreases tremendously, the ratio of working to idling threads also increases
+a lot, and so on)

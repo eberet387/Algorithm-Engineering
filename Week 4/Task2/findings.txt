@@ -1,0 +1,29 @@
+The performance of min_max quicksort and gnu parallel is
+consitently better than std:sort.
+
+There are huge fluctuations in the smaller dataset ranges
+(up to an array size of 10^6) likely caused by the incredibly
+fast times which are not guaranteed to be timed correctly due
+to constraints of the omp_get_wtime() function.
+
+Starting at the end of the flucuation period, the speedups 
+for both algorithms increase steadily.
+
+At an array size of about 6 * 10^6, the speedup reaches a
+constant level for both. ~10 for gnu_parallel, and ~8.5 for
+min_max quicksort.
+
+After that, starting at an array size of about 10^8 for both 
+algorithms, the speedups quickly fall off and the performance 
+decreases. The reason for this should be increases in overhead 
+or memory constraints.
+
+There is a general slight advantage of min_max quicksort for
+most small datasets (until 10^6), after which the performance
+of gnu_parallel exceeds min_max quicksort, until the falloff
+at which point there is no clear algorithm that outperforms the
+other.
+
+Reasons for the different performances are differences in
+algorithm structure, memory and cache usage/efficiency, 
+overhead as well as other parameters. 

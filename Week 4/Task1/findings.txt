@@ -1,0 +1,25 @@
+Looking at the plot, there is a both gnu_parallel and min_max quicksort
+result in significant performance increases over std:sort. The performance
+increase per thread however seems to max out at about 16 threads. After
+which, there is no significant gain in performance.
+
+gnu_parallel slowly gets worse after about 40 Threads, while 
+min_max quicksort keeps a constant performance from 16 to 128 Threads.
+
+Taking a closer look at the first 16 #Threads in the subplot, one can see
+that the performance of the sorting methods are about equal up to 9 Threads,
+after which gnu_parallel has an advantage over min_max quicksort.
+
+Why is there no big performance gain after 16 threads?
+This might be because the CPU used has only 12 Cores, thus supporting 
+only 12 threads, after which, intel's hyperthreading comes into place. 
+It seems like 16 is the barrier of Threads the i5 12500H is capable of.
+
+Why does gnu_parallel outperform min_max quicksort?
+This seems to be the case because min_max quicksort uses an algorithm that
+is worse in the case of a greater number of threads than gnu_parallel
+due to possible differing memory access patterns, cache efficiency, 
+thread management, overhead, ... 
+
+
+

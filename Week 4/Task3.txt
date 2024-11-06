@@ -1,0 +1,24 @@
+->  Read What every systems programmer should know about
+    concurrency.
+    https://assets.bitbashing.io/papers/concurrency-primer.pdf
+    Discuss two things you find particularly interesting.
+
+1:  Volatile is not suitable for concurrency control.
+    I find it interesting that this is the case as I had 
+    thought that using volatile would ensure atomicity 
+    and therfore thread safe operations.
+    However, as it turns out, volatile prevents the compiler
+    from optimizing some load and store operations, 
+    keeping these in order only with each other, and not 
+    the general rearranging of the other loads and stores.
+    As a result of this, there is no guarantee for atomicitiy
+    except for the case that no rearrangement of loads/stores
+    are done at all.
+
+2:  Atomic operations are not guaranteed to prevent all sorts
+    of optimizations, as they are not immune to all compiler 
+    optimizations.
+    In my opinion, this is interesting because I never really
+    thought about the compiler getting in the way of atomic
+    statements. The way to prevent this is by the use of the
+    aforementioned volatile keyword.

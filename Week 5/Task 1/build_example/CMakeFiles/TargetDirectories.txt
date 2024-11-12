@@ -1,0 +1,9 @@
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/CMakeFiles/quantpng.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/CMakeFiles/rebuild_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/lodepng/CMakeFiles/lodepng.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/lodepng/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/lodepng/CMakeFiles/rebuild_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/quantize/CMakeFiles/quantize.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/quantize/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 1/build_example/quantize/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,8 @@
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/CMakeFiles/fizzbuzz_tests.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/CMakeFiles/rebuild_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/fizzbuzz/CMakeFiles/fizzbuzz.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/fizzbuzz/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/fizzbuzz/CMakeFiles/rebuild_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/catch/CMakeFiles/edit_cache.dir
+C:/dev/Uni/Algorithm-Engineering/Week 5/Task 2/build_example/catch/CMakeFiles/rebuild_cache.dir

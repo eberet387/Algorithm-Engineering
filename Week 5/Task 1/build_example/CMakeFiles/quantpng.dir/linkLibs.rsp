@@ -1,0 +1,1 @@
+ lodepng/liblodepng.a quantize/libquantize.a C:/MinGW/mingw32/lib/gcc/mingw32/6.3.0/libgomp.dll.a C:/MinGW/mingw32/lib/libpthread.dll.a C:/MinGW/mingw32/lib/libmingwthrd.a -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 

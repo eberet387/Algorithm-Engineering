@@ -1,0 +1,15 @@
+->  What are the advantages of unit stride (stride-1) memory
+    access compared to accessing memory with larger strides 
+    (for example, stride-8)?
+
+Advantages:
+    -> stride-1 offers the lowest distance between the
+    accessed memory
+    -> therefore offers the best cache efficiency of all
+    strides as a single cache line fetches only needed
+    elements
+    -> access latency is minimized because the memory lines 
+    are contiguous 
+    -> allows efficient vectorization as larger strides
+    have difficulties with or may even prevent vectorization,
+    and causes reduced efficiency in SIMD usage

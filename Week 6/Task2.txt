@@ -1,0 +1,27 @@
+-> How can memory aliasing affect performance?
+
+Aliasing = multiple variables refer to the same memory address
+
+If aliasing happens, unintentionally or not, performance suffers.
+In a sense, the compiler often times is unable to perform 
+optimizations as it has to make sure that no information is lost
+(a store into one aliased varibale leads to a store into all other
+versions of the aliased varibales sharing the same memory address, 
+and so on). 
+Compilers always have to assume the worst case for aliased
+variables.
+
+This can be mitigated using specified compiler keywords like
+-qalias, however, the general consensus is to avoid aliasing
+if possible.
+
+Moreover, unintentional alising can also cause the program
+to function different than intended, as variables could be 
+affected by things that should not have an impact on them.
+This could also lead to negative performance (in terms of
+correctness of the output, as well as time efficiency due
+to the added neccessary stores/loads)
+
+Sources:
+->  https://www.ibm.com/docs/en/xcafbg/9.0.0?topic=SS3KZ4_9.0.0/com.ibm.xlf111.bg.doc/xlfopg/aliasing.htm
+->  https://therenegadecoder.com/code/what-is-aliasing-in-computer-science-why-does-it-happen-and-is-it-bad/

@@ -1,0 +1,35 @@
+->  Name some characteristics of the instructions sets: SSE,
+    AVX(2) and AVX-512.
+
+SSE:
+    -> Introduced in 1999
+    -> 16 128-bit vector registers
+    -> registers are named from XMM0 to XMM15
+    -> 128-bit SIMD parallelism
+    -> supports float and integer (added in SSE2) data + instructions
+
+AVX(2):
+    -> also known as "Haswell New Instructions"
+    -> Introduced in 2013
+    -> 16 256-bit vector registers
+    -> registeres are named from YMM0 to YMM15
+    -> supports both 128-bit and 256-bit parallelism
+    -> supports float and integer data + instructions
+
+AVX-512:
+    -> introduced in 2016
+    -> 32 512-bit vector registers
+    -> registers are named from ZMM0 to ZMM31
+    -> supports write masking 
+    (individual elements of the vector can be written / changed
+    according to a bit mask)
+    -> there are 8 64-bit mask registers named K0 to K7
+    -> supports memory fault suppression
+    (if loading something from memory causes the virtual address
+    to exceed the allocated memory range / or memory has already
+    been freed, AVX-512 can mask out the bytes that are faulty.)
+    -> variety of Integer / Float instructions
+
+Sources:
+    -> https://en.wikichip.org/wiki/x86/avx-512
+    -> https://en.wikipedia.org/wiki/Advanced_Vector_Extensions

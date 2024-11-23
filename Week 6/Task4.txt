@@ -1,0 +1,10 @@
+->  When would you prefer arranging records in memory as a
+    Structure of Arrays?
+
+When:
+    -> performance optimizations are important, 
+    -> you want to be able to vectorize efficiently,
+    -> SIMD is used,
+    -> cache efficiency is important,
+    -> many calculations are performend on a field-basis
+    (i.e. prices of all products need to be transformend)

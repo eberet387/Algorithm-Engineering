@@ -1,0 +1,61 @@
+->  Read the article Intel MMX for Multimedia PCs.
+    Discuss two things you find particularly interesting.
+
+MMX's saturation arithmetic in graphic routines:
+    - normally, when an overflow happens, the most
+    significant bit (leftmost) gets lost
+    - this causes arithmetic operations to be
+    inaccurate
+    - however, a feature of MMX's instructions is
+    called "saturation arithmetic", which does the
+    following:
+    - if an overflow / underflow occurs, the value
+    of the variable stays at the largest / smallest
+    possible value and will not increase further,
+    therefore preventing the overflow / underflow
+    altogether
+    - this is especially helpful in graphics
+    calculations, as in the example of pixel color
+    computation, if the colors of two dark pixels 
+    are added, it will likely cause an overflow,
+    therfore resulting in a lighter shade than the
+    two colors' starting points, which is not wanted
+    behaviour
+    - with the overflow / underflow prevention, the
+    color would get set to the darkest shade possible,
+    eliminating the unwanted overflow.
+    - I find this especially interesting, as I have
+    never thought about relevance of over- / underflows
+    in graphics / video computations 
+    - the only "problem" i could find with this solution
+    is that there is no differentiation of a variable
+    that was overflown by just a small amoount and a 
+    variable that was overflown by a large amount,
+    however in thoes mentioned fields, that should not
+    cause any significant problems
+    - if comparisons are of utmost importance however,
+    saturation arithmetic could lead to misleading results
+
+MMX's pack / unpack datatype conversion instructions:
+    - MMX is able to convert between smaller and larger
+    data types through the usage of the instructions
+    pack and unpack, where pack is used to convert to
+    smaller, and unpack is used to onvert to larger types
+    of data
+    - how this is done?: (a being a positive integer)
+    - unpack takes data of a size n-bit data type, and
+    turns it into a size (2^a)*n-bit data type by copying
+    the pre-existing data and filling the missing bits
+    with 0s, therefore converting the data type to double
+    the original size (e.g: 8->16 bit, 32->64 bit)
+    - pack is mainly used to convert back into a smaller 
+    data type after unpacking, as pack (presumably) 
+    removes the leading 0s and returns the remaining data
+    as a smaller data type
+    - I find this interesting because the ability to change
+    data type sizes on-the-fly enables programmers to make
+    great performance gains as you are always able to use
+    the best fitting size for computations throughout the
+    program and won't have to use a one-size-fits-all 
+    solution, resulting in better cache- and processing
+    bandwidth efficiency by avoiding wasted bits.

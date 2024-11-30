@@ -37,7 +37,8 @@ int main() {
 
   cout << "pi: " << pi << endl;
   cout << "run_time: " << run_time << " s" << endl;
-  cout << "n: " << n << endl; }
+  cout << "n: " << n << endl; 
+}
 
 /*
 int n = 100000000;

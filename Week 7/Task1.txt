@@ -1,0 +1,46 @@
+->  Explain three vectorization clauses of your choice that can
+    be used with #pragma omp simd.
+
+nontemporal(list) clause:
+    - tells the compiler use non-cached memory stores
+    (for specified list of variables)
+    - therefore bypassing the CPU cache, reads and writes
+    are done directly to the main memory
+    - useful for sets of data that will not get
+    used again in a reasonable amount of time
+    - useful if the data size is too large for the cache
+    - useful if there are other variables which benefit
+    more from caching, than the specified nontemporal 
+    variables
+    - potentially harmful if applied wrongfully 
+    - depends on architectures and compilers, therefore
+    may be more or less helpful in some environments
+    -> cache will not get cluddered with unnecessary info
+
+linear(list[ : linear-step]) clause:
+    - tells the compiler that there is a linear relation
+    between a list of variables, by an increment (or 
+    decrement) of the specified linear-step per loop
+    iteration
+    - helpful for things like: index offsets, loop-
+    dependent calculations because:
+    - the compiler is able to effectively and correctly
+    compute variables which otherwise would have needed
+    prior loop iterations to complete
+    - of course, if used in the wrong scenarios, this 
+    clause will cause the program to compute entirely
+    different (and also wrong) results
+    -> SIMD lanes can now perform loop iterations
+    independently
+
+collapse(n) clause:
+    - tells the compiler to parallelize not only the
+    outer, but also the (n-1) inner loops
+    - therfore, SIMD lanes can balance the workload more
+    evenly, which was a problem for programs where the 
+    outer loop was too small ( iterations < SIMD lanes)
+    or workload was not balanced evenly across lanes
+    - essentially similar to the non-SIMD clause, but
+    for SIMD lanes instead of threads
+    -> workload distribution spread evenly across SIMD
+    lanes in the case of nested loops 

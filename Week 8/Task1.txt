@@ -1,0 +1,59 @@
+->  Select one slide from the lecture, research more about the
+    topic, and report on it.
+
+*Slide 8: Loop Unrolling*
+    - is a known compiler optimization strategy since the 1960s, where to goal is to
+    decrease the overall amount of loop iterations needed, resulting in better
+    code performance
+    (http://archive.computerhistory.org/resources/text/Knuth_Don_X4100/PDF_index/k-5-pdf/k-5-u2456-Rechenplanfortigung-german.pdf)
+    - loop unrolling is not limited to for loops, as there are methods of
+    unrolling while loops aswell through multiple if and break statements
+    - Advantages:
+        - parallelization possible if loop iterations don't depend on eachother
+        - less iterations, fewer incrementations -> reduced operations needed
+        -> faster general program execution
+    - Disadvantages:
+        - cache misses are more common
+        - compiler will require more time to compile
+        - makes the code less readable
+        - has a greater demand for registers
+        - does not work well with branched loops
+    - Types loop unrolling:
+        - static loop unrolling: manually tweaking the involved loop, most often
+        by incrementing the iterator by a larger amount and changing the inside
+        of the loop
+        - dynamic loop unrolling: compilers deciding if loop unrolling is going
+        to lead to performance gains, and automatically unrolling loops if
+        the compilers evaluation deems unrolling performance-favorable
+        - partial unrolling: only parts of the loop are unrolled, could potentially
+        be of use to regain some cache efficiency or if there are memory constraints
+    
+    - while looking for information about loop unrolling, i came across different
+    loop optimization techniques, i.e:
+        - loop peeling: the first or last loop iteration(s) is/are moved outside
+        of the loop if they are of a different nature than the rest of the loop,
+        thus being compiler friendlier
+        - loop splitting: leaving the loop iterations the same, but splitting
+        the general workload across different loops
+            -> this should be the method we already used plenty of times for
+            parallelization in this module, as this is basically what omp does
+            for standard parallelization
+        - loop fusion: combining two loops that iterate over exactly the same
+        space to reduce the amount of incrementations needed
+
+    -> Thought: Combining loop peeling and loop fusion and loop splitting
+    -> Exammple: peeling and fusion
+    -> Loop a: 0 to 100
+       Loop b: 1 to 50
+       Loop c: 51 to 100
+
+       -> peel first iteration of Loop a (imagine it is of a different nature) -> loop a: 1 to 100
+       -> fuse loop b and c -> loop b_c: 1 to 100, 
+       -> fuse loop a and b_c -> loop a_b_c: 1 to 100
+
+    -> Should result in optimized code
+
+Sources:
+https://en.wikipedia.org/wiki/Loop_splitting
+https://www.geeksforgeeks.org/loop-unrolling/
+http://archive.computerhistory.org/resources/text/Knuth_Don_X4100/PDF_index/k-5-pdf/k-5-u2456-Rechenplanfortigung-german.pdf

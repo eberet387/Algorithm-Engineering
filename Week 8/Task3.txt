@@ -1,0 +1,43 @@
+->  Read the paper Analyzing Vectorized Hash Tables
+    Across CPU Architectures.
+
+    Discuss two things you find particularly interesting.
+
+First thing:
+The Comparison of Vectorized Hashing Techniques Across Architectures
+    - VLP, VFP and BBC were evaluated on x86, ARM and Power Architectures
+    - Conclusion: BBC performs consistently better than scalar / earlier
+    vectorized techniques, but performance improvements depend highly
+    on the level of platform optimizations
+    - Why this is interesting to me:
+    - Firstly, the comparison is valuable as in the modern era,
+    computing environments can consist of multiple architectures,
+    therefore, knowing which vectorized hashing technique works best
+    for the specific architecture is important for maximizing
+    performance
+    - However, as mentioned before, performance improvements are 
+    dependent on platform specific optimizations, therefore the
+    question is if the engineering workload of optimizing for
+    each used architecture is worth it or if it the time and 
+    resources could be spent more efficiently somewhere else
+    - This also limits the usefulnes of these findings as teams
+    without great resources or with constrained time frames or
+    in-depth architecture knowledge can not reap benefits in this
+    department
+
+Second thing:
+The Impact of Vectorizations on Hash Table performance
+    - The paper shows that vectorized hashing approaches offer 
+    performance gains over scalar techniques
+    - This is the case due to reduced collisions between hash keys
+    and an overall improved throughput
+    - Therefore, vectorizing is the overall better approach
+    - However, if this vectorization is naively done (as in VLP),
+    then this can lead to serious performance fall-offs over a
+    thoroughly put together vectorization, as there is no guarantee
+    that the vectorization is efficient in its memory access patterns,
+    overhead, cache-friendliness and so on
+    - This shows that despite vectorization being a useful tool,
+    it should not be done without a deep understanding of the 
+    inner workings
+    - Thus requiring a lot of knowledge and time to get it right

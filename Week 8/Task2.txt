@@ -1,0 +1,32 @@
+->  What do the metrics latency and throughput tell you about
+    the performance of an intrinsic function?
+
+As stated in the slides:
+    - latency means the number of CPU clock cycles an intrinsic
+    function needs until the result is finished
+    - throughput defines the number of CPU clock cycles needed to
+    start the next intrinsic (of the same kind)
+
+What do they tell us about the function?
+
+Latency:
+    - lower latency -> faster execution time per intrinsic
+    - higher latency -> slower execution time per intrinsic
+    (as more clock cycles are needed)
+
+Throughput:
+    (within the same timeframe:)
+    - lower throughput -> more intrinsics can be started
+    - higher throughput -> less intrinsics can be started
+
+Together:
+    - latency and throughput can bottleneck eachother
+    (intrinsics are executed faster than new ones can start
+    or more intrinsics could start faster than the already 
+    started intrinsics can complete)
+    - generally, if your code is heavily parallelized, and 
+    the intrinsic functions' latency is quite small, you will
+    benefit from having a small throughput
+    - the less parallelized your code gets, the more your
+    concern should lie on latency being the main bottleneck
+    of performance (as long as it is not already really small)

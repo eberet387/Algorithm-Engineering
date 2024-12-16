@@ -1,0 +1,37 @@
+->  Select one slide from the lecture, research more about the
+    topic, and report on it.
+
+Selected Slide: 11 (Data-Oriented Design)
+    - Examples of where DOD is often used in the gaming
+    industry:
+        - particle systems (e.g in unity)
+        - entity-component systems (storing chunks of data for 
+        different entity components like all entities' positions,
+        health, stamina, etc instead of storing all data entity
+        wise)
+        - pathfinding (storing grid data in arrays instead of
+        singular entities containign all (and mostly unwanted)
+        information)
+        - physics simulations (properties stored in SoA -> more
+        efficient)
+    - Why is it easier to parallellize with DOD
+        - Structure of Arrays are highly effective in
+        parallellization, as all data of a particular field
+        is stored in next to eachother, helping cache efficiency
+        as spatial locality is increased heavily over an Array of
+        Structures data layout
+        - data access is independent, meaning that multiple threads
+        can perform operations on different parts of the data 
+        without conflict
+        - enables efficient SIMD usage as large batches of data can
+        be fetched and operated on at once
+        - nless need for synchronization as the data in generally
+        more independent than with Array of Structures (no need to
+        account for complex object hierarchies)
+    - Background Info on DOD:
+        - was named by Noel Llopis in 09/2009
+        - DOD emerged as a response to inefficient traditional
+        OOP on potentially fast multi-core computers 
+        - lead to an influx of developers studying and
+        understanding the inner workings of caches, memory,
+        and all things needed for parallellization

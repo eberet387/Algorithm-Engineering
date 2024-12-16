@@ -1,0 +1,25 @@
+->  How do bandwidth-bound computations differ from
+    compute-bound computations?
+
+Bandwidth-Bound Computations:
+    - computations, that are bottlenecked by memory accesss
+    - therefore, memory bandwidth is the main factor of the
+    bottleneck
+    - mostly found when working with large datasets, sparse 
+    matrix operations and anywhere, where data transfer
+    between memory and processor are a key factor
+    -> CPU / GPU spends more time waiting for actual data
+    (fetching) than computing
+    -> performance gains depend mostly on bandwidth upgrades
+
+Compute-Bound Computations:
+    - computations, that are bottlenecked by computations
+    - therefore, the CPU is the main factor of the bottleneck
+    - mostly found in simulations of all sorts (scientific,
+    graphic, economic), dense matrix operations, as well as
+    general algorithms, where calculations form most of the
+    workload
+    -> CPU / GPU spends the most time computing, while fetching
+    data is only a small portion of the workload.
+    -> performance gains depend mostly on CPU / GPU upgrades
+    (or more efficient algorithms of course)

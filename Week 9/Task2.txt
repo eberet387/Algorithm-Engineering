@@ -1,0 +1,46 @@
+->  Explain why temporal locality and spatial locality can
+    improve program performance.
+
+What is temporal locality?
+    - "In a program with good temporal locality, a memory 
+    location that is referenced once is likely to be referenced 
+    again multiple times in the near future. 
+    (reuse data in caches)"
+
+Why temporal locality can improve program performance: 
+    - As the time between referencing the same memory decreases,
+    the chances of it being found in a cache - or a faster accessed
+    cache - significantly increases
+    - therfore, in general, a better temporal locality results in
+    fewer cache misses, and more cache hits of higher-level caches
+    -> less time has to be spent looking up memory as it is more
+    likely to already be in a (higher) cache
+    -> latency is reduced by a good amount, as data fetching is
+    way faster
+
+What is spatial locality?
+    - "In a program with good spatial locality, if a memory 
+    location is referenced once, then the program is likely 
+    to reference a nearby memory location in the near future. 
+    (prefer unit stride memory access)
+
+Why spatial locality can improve program performance:
+    - As the proximity between nearby referenced memory addresses
+    increases, the chances of them being fetched in a singular
+    cache line increases
+    - now if a memory address has to accessed, whose memory address
+    neighbour (or a memory address of close proximity) has recently
+    already been accessed, then there is a good chance of a cache 
+    hit, due to the proximity of the addresses
+    - the closer the accessed memory addresses are together, the
+    greater are the chances of them not needing to be fetched
+    one by one, as multiple of the needed memory addresses are
+    likely already fetched as a bundle into the cache
+    - the smaller the data structure, the bigger the impact - as 
+    one cache line load can potentially yield further valueable
+    memory addresses which could be used in the future
+    -> greater chance of cache hits
+    -> reduced latency
+    -> prefetching becomes more efficient
+
+*definitions were extracted from slide 8 (Week 9)

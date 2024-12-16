@@ -1,0 +1,44 @@
+->  Read the paper An Overview of Cache Optimization
+    Techniques and Cache-Aware Numerical Algorithms.
+    Discuss two things you find particularly interesting.
+
+Thing 1: Loop Interchange
+    - used to improve temporal locality
+    - is a data access optimization
+    - transforms the loop by swapping iteration orders
+    in nested loops, influencing memory access
+    - helps reduce the stride-coefficient if applied
+    in the right scenarios
+    - therefore improves cache efficiency as the chances
+    of data already being in the cache as data is accessed
+    more sequentially, in the way cache lines are loaded
+    - also aids in parallelization or vectorization
+    - is useful for matrix operations 
+    - if wrongly used, may be more hurtful than helpful
+    - therefore an in-depth understanding of the code 
+    is needed
+    - should only be used if loop order is irrelevant
+    - always a trade-off in vectorization and parallelization,
+    as loop orders that favor vectorization hurt parallelization,
+    and vice versa
+
+
+Thing 2: Array Merging
+    - used to improve spatial locality between array elements
+    that are frequently accessed together
+    - is a data layout optimization
+    - merges arrays into multidimensional arrays or strucs of
+    arrays (which are already really great DOD heuristics)
+    - improves the number of cache hits by forcing the CPU
+    to load those now merged, frequently accessed together
+    array elements, in pairs
+    - just like loop interchanges, if used in the wrong
+    scenarios, you may end up hurting performance
+    - as a result, a high comprehension level of the code
+    is required
+    - if those elements are not guaranteed to be needed together,
+    or are only needed together in a few parts of the code,
+    you need to run tests to decide if it is useful or not
+    - also, in the case that the struct features at least one 
+    element that is not of use to the calculations, then
+    the amount cache misses will drasticly rise  

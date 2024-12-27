@@ -1,0 +1,28 @@
+1. Get an Overview of image processing
+
+2. Create a file for preprocessing
+    - Input: image
+    - Processing: RGB -> Greyscale
+    - Output: Pixel Array[][] of Greyscale Color Data (0-255)
+    - function to output image size (width, height)
+
+3. Create a file for image enhancing
+    - Input: preprocessed Image
+    - function for local greyscale comparisons of pixel x ( < or > than local average values? -> BLACK or WHITE)
+    [o] [o] [o]                                             [ 75] [100] [ 75]
+    [o] [x] [o] # maybe: weights depending on closeness:    [100] [ x ] [100]
+    [o] [o] [o]                                             [ 75] [100] [ 75]
+    - respect memory address boundaries
+
+4. Iterate over each pixel, of preprocessed image, store result in bool array[][] (BLACK / WHITE)
+
+5. Create Image through colorization of the pixels, depending on the black/white array
+    - save image
+
+6. Parallelization
+
+7. Catch tests for preprocessing + image enhancing 
+
+8. Makefile / Cmake magic
+
+9. Write report

@@ -81,6 +81,91 @@ unsigned char* toGrayScale(unsigned char* img, int width, int height, int channe
     return imageGrayScale;
 }
 
+double calculateMean(const unsigned char* img, int width, int height) {
+    long long sum = 0;
+    for (int i = 0; i < width * height; ++i) {
+        sum += img[i];
+    }
+
+    return (sum / (width * height));
+}
+
+double calculateStandardDeviation(const unsigned char* img, int width, int height) {
+    double mean = calculateMean(img, width, height);
+    double sum_squared_diff = 0.0;
+
+    for (int i = 0; i < width * height; ++i) {
+        double diff = img[i] - mean;
+        sum_squared_diff += diff * diff;
+    }
+
+    return std::sqrt(sum_squared_diff / (width * height));
+}
+
+double calculateMinDeviation(const unsigned char* img, int width, int height, double mean) {
+
+    int min_deviation = 255; // Maximum possible deviation
+
+    for (int i = 0; i < width * height; ++i) {
+        int deviation = std::abs(img[i] - mean);
+        min_deviation = std::min(min_deviation, deviation);
+    }
+
+    return min_deviation;
+}
+
+double calculateMaxDeviation(const unsigned char* img, int width, int height, double mean) {
+
+    int max_deviation = 0;   // Minimum possible deviation
+
+    for (int i = 0; i < width * height; ++i) {
+        int deviation = std::abs(img[i] - mean);
+        max_deviation = std::max(max_deviation, deviation);
+    }
+
+    return max_deviation;
+}
+
+double calculateWindowMean(const unsigned char* img, int width, int height, int x, int y, int windowSize) {
+    long long sum = 0;
+    int count = 0;
+    int halfWindowSize = windowSize/2;
+
+    for (int i = y - halfWindowSize; i < y + halfWindowSize && i < height; ++i) {
+        for (int j = x - halfWindowSize; j < x + halfWindowSize && j < width; ++j) {
+            sum += img[i * width + j];
+            count++;
+        }
+    }
+
+    return sum / count;
+}
+
+double calculateWindowStandardDeviation(const unsigned char* img, int width, int height, int x, int y, int windowSize) {
+    double mean = calculateWindowMean(img, width, height, x, y, windowSize);
+    double sum_squared_diff = 0.0;
+    int count = 0;
+    int halfWindowSize = windowSize/2;
+
+    for (int i = y - halfWindowSize; i < y + halfWindowSize && i < height; ++i) {
+        for (int j = x - halfWindowSize; j < x + halfWindowSize && j < width; ++j) {
+            double diff = img[i * width + j] - mean;
+            sum_squared_diff += diff * diff;
+            ++count;
+        }
+    }
+
+    return std::sqrt(sum_squared_diff / count);
+}
+
+double calculateAdaptiveDeviation(double windowDev, double minDev, double maxDev) {
+    return (windowDev - minDev) * (maxDev - minDev);
+}
+
+double calculateThreshold(double mean, double meanWindow, double adaptiveDeviation, double windowDeviation) {
+    return meanWindow - (meanWindow * meanWindow - windowDeviation) / ((mean + windowDeviation) * (adaptiveDeviation + windowDeviation));
+}
+
 int main(int argc, char** argv) {
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <image_path>" << std::endl;
@@ -104,6 +189,27 @@ int main(int argc, char** argv) {
 
     // Convert image to grayscale
     unsigned char* imageGrayScale = toGrayScale(img, width, height, channels);
+
+    // Helpers
+    double mean = calculateMean(imageGrayScale, width, height);
+    double standardDev = calculateStandardDeviation(imageGrayScale, width, height);
+    double minDev = calculateMinDeviation(imageGrayScale, width, height, mean);
+    double maxDev = calculateMaxDeviation(imageGrayScale, width, height, mean);
+    int windowSize = 20;
+    double testWindowMean = calculateWindowMean(imageGrayScale, width, height, 30, 30, windowSize);
+    double testWindowDev = calculateWindowStandardDeviation(imageGrayScale, width, height, 30, 30, windowSize);
+    double testAdaptiveDev = calculateAdaptiveDeviation(testWindowDev, minDev, maxDev);
+    double testThreshold = calculateThreshold(mean, testWindowMean, testAdaptiveDev, testWindowDev);
+
+    printf("Width: %d, Height: %d\n", width, height);
+    printf("Mean: %f\n", mean);
+    printf("Standarddev: %f\n", standardDev);
+    printf("minDev: %f\n", minDev);
+    printf("maxDev: %f\n", maxDev);
+    printf("(x,y) (30,30) window mean: %f\n", testWindowMean);
+    printf("(x,y) (30,30) window std. dev: %f\n", testWindowDev);
+    printf("(x,y) (30,30) adaptive dev: %f\n", testAdaptiveDev);
+    printf("(x,y) (30,30) Threshold: %f\n", testThreshold);
 
     // Write grayscale image to a file
     if (stbi_write_png("output/outputGrayScale.png", width, height, 1, imageGrayScale, width) == 0) {

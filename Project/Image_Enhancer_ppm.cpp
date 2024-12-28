@@ -56,8 +56,42 @@ unsigned char* load_ppm(const char* filename, int& width, int& height, int& chan
         }
         data[i] = static_cast<unsigned char>(value);
     }
-
+    file.close();
     return data;
+}
+
+void writePPM(const char* filename, int width, int height, unsigned char* data) {
+    // Open the output file
+    std::ofstream file(filename);
+    if (!file) {
+        std::cerr << "Error: Cannot open file " << filename << " for writing." << std::endl;
+        return;
+    }
+
+    // Write the PPM header
+    file << "P3\n";                // P3 format
+    file << width << " " << height << "\n"; // Image dimensions
+    file << "255\n";              // Maximum color value
+
+    // Write the pixel data
+    for (int i = 0; i < height; i += 1) {
+        for (int j = 0; j < width; j += 1) {
+            int r = static_cast<unsigned char>(data[i * width + j]);
+            int g = static_cast<unsigned char>(data[i * width + j]);
+            int b = static_cast<unsigned char>(data[i * width + j]);
+
+            file << r << " " << g << " " << b << "   ";
+        }
+        file << "\n";
+    }
+
+    // Close the file
+    file.close();
+    if (!file) {
+        std::cerr << "Error: Failed to write to file " << filename << std::endl;
+    } else {
+        std::cout << "PPM file written successfully: " << filename << std::endl;
+    }
 }
 
 // Function to convert an image to grayscale
@@ -211,9 +245,35 @@ double** calculateThreshold(double mean, int width, int height, double** meanWin
 }
 
 int main(int argc, char** argv) {
-    if (argc != 2) {
+    if (argc <= 1) {
         std::cerr << "Usage: " << argv[0] << " <image_path>" << std::endl;
         return 1;
+    }
+    std::string output = "output/";
+    std::string filetype;
+    bool verbose = false;
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg = argv[i];
+        if (arg.substr(0, 2) == "-o") {
+            output += arg.substr(3); 
+
+            size_t pos = output.rfind('.');
+            if (output.rfind('.') == std::string::npos) {
+                std::cerr << "Must include output file type" << std::endl;
+                return 1;
+            } else {
+                filetype = output.substr(pos);
+            }
+        }
+         if (arg.substr(0, 2) == "-v") {
+            verbose = true;
+        }
+    }
+
+    if (output == "output/") {
+        output += "output_enhanced.ppm";
+        filetype = ".ppm";
     }
 
     int width, height, channels;
@@ -261,46 +321,67 @@ int main(int argc, char** argv) {
     adaptiveDev = calculateAdaptiveDeviation(windowDev, width, height, minDev, maxDev, adaptiveDev);
     threshold = calculateThreshold(mean, width, height, windowMean, adaptiveDev, windowDev, threshold);
 
-    printf("Width: %d, Height: %d\n", width, height);
-    printf("Mean: %f\n", mean);
-    printf("Standarddev: %f\n", standardDev);
-    printf("minDev: %f\n", minDev);
-    printf("maxDev: %f\n", maxDev);
-    printf("(x,y) (30,30) dev: %f\n", devs[30][30]);
-    printf("(x,y) (30,30) window mean: %f\n", windowMean[30][30]);
-    printf("(x,y) (30,30) window std. dev: %f\n", windowDev[30][30]);
-    printf("(x,y) (30,30) adaptive dev: %f\n", adaptiveDev[30][30]);
-    printf("(x,y) (30,30) Threshold: %f\n", threshold[30][30]);
+    if (verbose) {
+        printf("Width: %d, Height: %d\n", width, height);
+        printf("Mean: %f\n", mean);
+        printf("Standarddev: %f\n", standardDev);
+        printf("minDev: %f\n", minDev);
+        printf("maxDev: %f\n", maxDev);
+        printf("\nExample pixel-specific values:\n");
+        printf("(x,y) (%d,%d) dev: %f\n", width/2, height/2, devs[width/2][height/2]);
+        printf("(x,y) (%d,%d) window mean: %f\n", width/2, height/2, windowMean[width/2][height/2]);
+        printf("(x,y) (%d,%d) window std. dev: %f\n", width/2, height/2, windowDev[width/2][height/2]);
+        printf("(x,y) (%d,%d) adaptive dev: %f\n", width/2, height/2, adaptiveDev[width/2][height/2]);
+        printf("(x,y) (%d,%d) Threshold: %f\n\n", width/2, height/2, threshold[width/2][height/2]);
+    }
+    
 
     img = toEnhanced(img, imageGrayScale, width, height, 1, threshold);
     
     // Write grayscale image to a file
-    if (stbi_write_png("output/outputGrayScale.png", width, height, 1, imageGrayScale, width) == 0) {
-        std::cerr << "Error: Could not write the grayscale image file." << std::endl;
-        delete[] imageGrayScale;
-        if (filepath.substr(filepath.size() - 4) == ".ppm") {
-            delete[] img;
-        } else {
-            stbi_image_free(img);
-        }
-        return 1;
-    }
+    // if (stbi_write_png(output.c_str(), width, height, 1, imageGrayScale, width) == 0) {
+    //     std::cerr << "Error: Could not write the grayscale image file." << std::endl;
+    //     delete[] imageGrayScale;
+    //     if (filepath.substr(filepath.size() - 4) == ".ppm") {
+    //         delete[] img;
+    //     } else {
+    //         stbi_image_free(img);
+    //     }
+    //     return 1;
+    // }
 
-    std::cout << "Grayscale image created successfully: outputGrayScale.png" << std::endl;
+    // std::cout << "Grayscale image created successfully: " << output << std::endl;
 
     // Write grayscale image to a file
-    if (stbi_write_png("output/output_enhanced.png", width, height, 1, img, width) == 0) {
-        std::cerr << "Error: Could not write the enhanced image file." << std::endl;
-        delete[] img;
-        if (filepath.substr(filepath.size() - 4) == ".ppm") {
+
+    if (filetype == ".png") {
+        if (stbi_write_png(output.c_str(), width, height, 1, img, width) == 0) {
+            std::cerr << "Error: Could not write the enhanced image file." << std::endl;
             delete[] img;
-        } else {
-            stbi_image_free(img);
+            if (filepath.substr(filepath.size() - 4) == ".ppm") {
+                delete[] img;
+            } else {
+                stbi_image_free(img);
+            }
+            return 1;
         }
-        return 1;
+    } else if (filetype == ".jpg") {
+        if (stbi_write_jpg(output.c_str(), width, height, 1, img, width) == 0) {
+            std::cerr << "Error: Could not write the enhanced image file." << std::endl;
+            delete[] img;
+            if (filepath.substr(filepath.size() - 4) == ".ppm") {
+                delete[] img;
+            } else {
+                stbi_image_free(img);
+            }
+            return 1;
+        }
+    } else if (filetype == ".ppm") {
+        writePPM(output.c_str(), width, height, img);
     }
 
-    std::cout << "Enhanced image created successfully: output_enhanced.png" << std::endl;
+
+    std::cout << "Enhanced image created successfully: " << output << std::endl;
 
     // Free allocated memory
     delete[] imageGrayScale;

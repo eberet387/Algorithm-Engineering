@@ -1,0 +1,44 @@
+->  Select one slide from the lecture, research more about the
+    topic, and report on it. (except pages 15–16)
+
+->  Intel VTune Amplifier (Slide 11)
+
+As we already know from the Slide, Intel VTune Amplifier helps us:
+- diagnose performance metrics in an application such as
+    - CPI,
+    - thread concurrency,
+    - cache misses #
+    - achieved memory bandwidth
+    - ...
+- detect hotspots / bottlenecks
+
+However, Intel VTune Amplifier is also able to:
+- visualize most information in graphs
+- find hardware-specific microarchitecture issues 
+- examine bottlenecks in how the hardware processes I/O traffic
+- help in power consumption and thermal-related throttling
+- find GPU-bound hotspots
+- show data transfer rates between components such as the DDR memory
+- help visualize big, multi-node workloads including OpenMP or MPI
+
+Background information: the Intel VTune Amplifier..
+- is not limited to C++, as it supports other
+  languages such as:
+    - C,
+    - C#,
+    - Fortran,
+    - Python, ...
+- has been renamed to Intel VTune Profiler as of version 2022
+- is still updated as of today
+- the current stable release is 2025.0.1
+- was first released in the year 2000
+- has integration into popular IDEs like Visual Studio
+- also works as a CLI tool
+- is included in Intel's OneAPI toolkit
+- has a Free Community license 
+
+Funnily enough, most tools of Intel VTune Amplifier also work on AMD CPUs.
+
+Sources:
+https://www.intel.com/content/www/us/en/developer/articles/release-notes/vtune-profiler-release-notes.html
+https://en.wikipedia.org/wiki/VTune

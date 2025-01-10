@@ -1,0 +1,43 @@
+->  Read the paper Designing SSD-friendly Applications
+    for Better Application Performance and Higher IO
+    Efficiency.
+    Discuss two things you find particularly interesting.
+
+-> Seperating Hot Data from Cold Data
+    - This this supposed to increase the SSD's life while also
+    improving IO performance, depending on the ratio of hot to cold 
+    data on the SSD. (hot data meaning frequently updated and accessed,
+    while cold meaning rarely updated or accessed)
+    - I find this concept interesting because I have not thought about
+    this sort of optimization for i.e. databases, as I have only ever
+    seen the traditional way of storing all data (as in the example of
+    users of a social media application) in the same space with no
+    differentiation between hot / cold data (as in active / inactive
+    users).
+    - The performance and longevity increase happens because of the way
+    that SSD's fetch / modify data at page level.
+    - I do think that this has reasonable use-cases for data, where the
+    "hot-ness" of a structure rarely updates, but I doubt that such an
+    implementation will be of good practice for complex things with
+    ever-changing "hot-ness" levels, therefore needing to re-structure
+    the entire data stored on the SSD's in regular intervals, which to
+    my knowledge might hinder performance, especially if it is done
+    in the background by taking up otherwise usable IO bandwidth
+
+-> IO Handling: Prefer Not Mixing Write and Read
+    - Read / write traffic together causes performance losses in either
+    read-, write-, or both traffics altogether.
+    - This happens as one-way pipelines, which are specifically optimized 
+    for one direction at a time, are now hindered in their performance as
+    they are not meant to do such multi-directional tasks efficiently.
+    - Therefore, programms should keep in mind to bundle reads and
+    writes to efficiently utilize the full performance of SSD's.
+    - While this sounds easy to implement, it is often times not
+    achievable to fully alleviate the mixed IOs, as some programs rely
+    on concurrent reads and writes as in the cases of system monitoring
+    or collaborative document editing. Otherwise, such system would lack
+    a seamless user experience and remove the snappyness of said
+    applications.
+    - However, i still think that keeping this optimization technique
+    in mind can lead to quite significant performance increases in
+    a multitude of applications.

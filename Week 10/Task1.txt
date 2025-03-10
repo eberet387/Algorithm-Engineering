@@ -1,0 +1,37 @@
+->  Discuss Donald Knuth’s original quote about premature
+    optimization (page 16). What is your opinion?
+
+In my opinion, Donald Knuth's original quote holds true for the most
+part. I strongly agree that hyper-optimizing a program leads to a 
+big loss in readability and therefore, as the quote says, making
+performing maintenance and debugging significantly harder.
+
+I also believe that buliding a non-optimized program first, before
+optimizing it later can help in understanding the root inefficiencies
+as well as aiding in getting a usable - however non optimized - version
+of the program out faster, which could have a great benefit in real-
+world applications.
+
+The part of the quote that I do not agree with is the distribution of
+the critical (3%) to non-critical (97%) times, where the code should
+/ should not be optimized. I simply do not think that a statement like
+this can be generalized, as it is essentially specific to each program
+individually, which parts of the code are leading to the biggest 
+performance losses. However, I understand and agree with the gist of 
+the statement - that most of the times, it is wiser to focus on the
+small fraction of the code that would benefit the most from optimizations.
+
+Moreover, I believe that programmers have evolved quite a lot since
+the quote was made, meaning that a priori judgements should be quite
+a lot better now than when the quote was written, as we are a lot more
+knowledgeable about all sorts of optimizations and inefficiencies now.
+
+Lastly, I have to agree with the statement that compilers should feature
+analyses of code-segment time and space costs, as this would be really
+useful, reducing the need to manually benchmark times and reduce the 
+debugging process. However, in my honest opinion, it should not be 
+turned on automatically, and should be treated like a normal compiler
+flag.
+
+All in all, I mostly agree with the Quote and think that the gist still
+holds true to this day.

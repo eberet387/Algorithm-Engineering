@@ -1,0 +1,37 @@
+->  Select one slide from the lecture, research more about the
+    topic, and report on it
+
+->  Avoid Full SSD Usage (Slide 14)
+
+Additional Info on SSD Usage:
+- It is recommended to keep at least 25% of the SSD space empty
+as partially filled blocks would cause existing data to be deleted, 
+which is why the SSD needs to perform extra steps like reading values
+into it's cache. modifying those values and rewriting the entire
+block to write files (also known as write amplification). This
+will not only cause increased latency, but also more wear-and-tear 
+as otherwise not needed actions are now being performed.
+- Manufacturers sometimes reserve a few % of the SSD's space to 
+mitigate the negative impacts of almost fully filled SSD's.
+- There is no way to accurately calculate exactly how much space you
+are able to use without great performance deficits.
+- However, there are also user tests which show that a free space 
+percentage of 50% can already substantially decrease performance by
+making the SSD unable to perform at the max read/write speeds at all
+times and therefore fluctuating between both high and low speeds.
+- The same test concludes that a 90% filled SSD is bound to it's lower
+end of performance, only reaching it's former max performance for small
+batches of data.
+- While not really on-topic, this sort of SSD-optimization by removing
+not needed data reminds me of the manual boot-partition optimizations
+of HDDs, where people would manually create partitions so that the boot
+partition of a drive would land close to the outer side of the disk,
+where the rotational speeds are higher than inside, creating higher
+read/write speeds.
+- In my opinion, the importance of this is not as significant as other
+optimizations, as normal consumers would likely just buy a new, bigger
+size SSD when they reach close to their maximum storage.
+
+Sources:
+https://platinumdatarecovery.com/blog/fill-up-full-capacity
+https://www.xda-developers.com/why-you-should-never-completely-fill-up-your-ssd/

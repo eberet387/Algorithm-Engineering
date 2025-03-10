@@ -1,0 +1,182 @@
+->  Select three slides from the lecture, research more about the
+    topics, and report on them. (one slide from the parallelization
+    section, the other two slides from two other topics)
+
+Slide 4: Relevant Architectures:
+    - Slide 4 depicts some relevant processor architectures, namely
+    Intel and AMDs x86-64, Apples M-series and the RISC-V architectures.
+    - Doing some basic research about these CPU architectures, I found
+    the following benefits and drawbacks of each.
+
+    Intels x86-64:
+    - Is great at providing high clock speeds and single core performance.
+    - Has the highest compatibility with modern software.
+    - Is well suited for AI workloads.
+    
+    - Power efficiency is lackluster (despite efficiency cores).
+    - Seems to be the most expensive out of the x86-64 architectures.
+    
+    AMDs x86-64: 
+    - Has great performance per watt in terms of x86-64 processors.
+    - Is stronger in multi-threaded workloads.
+    - Overall cheaper than Intel, therfore more economically efficient.
+
+    - Power consumption is still way above ARM.
+    - Is lacking in terms of single-core performance.
+
+    Why do they differ so much?
+    -> Because of differences in instruction decoding, as well as cache latencies
+    and chipset design as a whole (multiple smaller dies vs less but bigger dies)
+
+
+    Apples M-series (ARM):
+    - Is extremely power efficient and performant.
+    - This leads to a long lasting battery life in laptops without trading it off
+    for performance.
+    - Has a unified memory architecture which speeds up memory access.
+
+    - Is often the most expensive option.
+    - Bound to macOS with limited compatibility with other operating systems.
+
+    RISC-V:
+    - Is open source.
+    - Can be optimized per use-case.
+    - Like ARM, it has good power eficiency.
+    - Is on the rise in HPC and IoT.
+
+    - Lacks software support.
+    - Is not as performant as x86 / ARM.
+
+
+    How do their Vector Instruction Sets differ?
+    -> The different architectures support a variety of different Vector Instruction
+    Sets. These can be compared in their SIMD Bit Width.
+
+    Intel has bit width of up to 512 using AVX-512, but usually runs on a 256-bit width
+    with AVX2. AMD also supports AVX-512 since Zen 4, and is therefore on par with Intel.
+
+    Apples M-Series has a 128-bit SIMD width through NEON, and provides scalability up to
+    2048 with SVE2. RISC-V has its own set of RISC-V Vector Extensions (RVV), which is fully
+    scalable from 128 to 2048-bit wide SIMD instructions.
+
+
+    Finally, depending on the goal and workload, different architectures may be the better choice.
+    Generally speaking, if power consumption is of high priority, then ARM / RISC-V is the
+    favorable choice. However, in certain scenarios, Intel and AMD offer better raw SIMD performance.
+    This may be the case as some sources claim that AVX is generally better optimized than NEON, while
+    RISC-V just has not had the time to fully it's potential.
+
+
+Slide 13: General-Purpose Computing on Graphics Processing Units:
+    - Slide 13 shows how to use a GPU for general-purpose parallel processing with the help of
+    OpenCL, NVIDIA Cuda and so on.
+
+    By now, it should be well known that GPUs are not only used for processing graphics,
+    but instead provide great value in accelerating machine learning, video editing, training
+    neural networks, etc.
+
+    Why should we care about using GPUs instead of CPUs?
+    -> GPUs tend to be more power efficient, have more computing power, are made for parallel
+    instructions, are flexible and can be easily scaled. 
+
+    How can you use a GPU like that?
+    -> There are multiple APIs available for C++ like CUDA, Metal or OpenCL, which allow for
+    an easy implementaion of GPU-parallelization for most tasks. 
+
+    Since when did people start using GPUs outside of rendering graphics?
+    -> There is no clear timestamp, but the amount of research publications about the
+    topic started to gain traction around the year 2002.
+    GPGPU APIs were first made available to the general public with the launch of NVIDIA Cuda in 2006,
+    and OpenCL following shortly after in 2009. 
+
+    GPU usage in math:
+    Since especially the field of methematics often requires bulky, repetetive operations,
+    the usage of GPUs has skyrocketet within the last decade as GPUs became more and more powerful.
+    Linear Algebra is a prime example where GPUs can be lead to great calculation speed imrpovements,
+    as matrix multiplications are perfectly made for what a GPU is supposed to do - as rendering
+    3d objects also requires a hefty amount of matrix multiplcation operations.
+
+    Current Trend:
+    In the recent times, I have personally seen a huge influx of people using their GPU to
+    run large LLMs locally, which seems like a trend that is only going to increase with time.
+    This highlights just how good modern GPUs have become at handling massive, parallelized data streams,
+    as such LLMs like Deepseek or Groq have multiple billions of parameters.
+    The biggest bottleneck that decides if you can or can't run a specific LLM locally is not simply the (feasable)
+    speed of the generated answers, which is determined by the GPUs compute power and memory bandwidth - it is
+    in fact the VRAM size of the GPU as the LLM parameters are stored entirely in the VRAM. There are of course
+    ways to offload parameters into RAM or even disk space, but that drastically slows the performance. 
+
+
+    Personal View:
+    In my honest opinion, and the way that the GPU market is as of right now, I think that the
+    rise of GPU usage in general and scientific computing could hurt the normal GPU consumers, as
+    GPU prices might in turn get even higher than they already are due to the increasing demand.
+
+    However, i really like the idea of maximizing all the computational power that a single computer
+    has by offloading work from the CPU to the GPU, which in turn frees up power that the CPU can reallocate
+    elsewhere for maximum efficiency. As most desktop users have CUDA or OpenCL capable GPUs according to the
+    monthly Steam Surverys, i can see great value in this.
+
+    It is also quite interesting thinking about the possibility of "fixing" a big CPU bottleneck by
+    dynamically allocating a part of the GPUs computational power to help out the CPU when required.
+    I cannot fathom the amount of work needed to implement this, or if it were even possible, but i wanted
+    to share the rather "funny" thought i had.
+
+Slide 8: OpenMP vs  C++ Threads:
+->  Slide 8 mentions that it is good to know how to parallelize code without OpenMP, by using C++ Threads.
+
+    I did some research to find out in which situations you should use OpenMP or C++ Threads respectively.
+
+    OpenMP was first introduced in 1997 and still serves as a parallelization API today. It is specifically
+    designed for a single multi core processor and a single shared address space. Because of how easy OpenMP is to use,
+    requiring only a few #pragmas and a specific compiler to parallelize freshly written or already existing
+    code, it seems like the go-to for fast implementation. Furthermore, OpenMP is not supposed to run alongside other
+    tasks such as asynchronous work or real-time systems, as OpenMP tends to fight for individual threads with other tasks,
+    which will result in bad thread scheduling, potential thread blocking and overall performance losses.
+    This makes it best suited for a standalone workload without other things going on in the background, like in 
+    scientific computing.  
+
+    C++ Threads are harder to implement, and thus the development process takes longer. They do however
+    offer the bigest flexibility and customizability as thread creation, load balancing and synchronization have 
+    to be manually implemented. Therefore you do not need to rely on the compiler to do the work perfectly. 
+    On the server side, C++ Threads are a much better choice than OpenMP, as OpenMP is not designed for interacting 
+    between multiple processors and adress spaces. Threads are the superior choice for mixed workloads like in game 
+    development, where threads are often idependently controlled for things like UI elements, physics, audio or input
+    processing, because OpenMP does not offer manual thread pinning. 
+
+    In my opinion, when trying to paralellize an already existing, large code project, (when applicable,) OpenMP is the superior choice.
+    The amount of work needed to change the enitre code around the usage of threads is far more challenging. Even if
+    the end goal is the fastetst version of the code, which is ultimately only managable with manual thread
+    implementations, it is still wise to build a precursor with OpenMP - to have a working product ready sooner, despite
+    the loss in performance that could have potentially been gained through manual thread coordination - as the maunal thread
+    implementation can always be added later.
+
+    The reason behind my opinion is that rapid prototypes offer various benefits over a slow but final implementation.
+    By only including a few #pragmas, developers can test the performance gains of parallelized region, find parallelized
+    bottlenecks faster and have a simplified debugging experience. When the developers finished debugigng the OpenMP code,
+    implementing the threaded version gets easier as they already have everything laid out how it should be, and only need
+    to concentrate on translating OpenMP to C++ Threads.
+
+
+
+
+
+
+
+Sources:
+https://www.windriver.com/solutions/learning/leading-processor-architectures
+https://en.wikipedia.org/wiki/Comparison_of_instruction_set_architectures
+https://www.researchgate.net/publication/381427331_ANALYSIS_OF_THE_DIFFERENCES_BETWEEN_INTEL_AND_AMD_PROCESSOR_DESIGNS
+https://picockpit.com/raspberry-pi/de/arm-vs-risc-v-vs-x86/
+https://en.wikipedia.org/wiki/Zen_4
+https://en.wikipedia.org/wiki/Advanced_Vector_Extensions
+https://en.wikipedia.org/wiki/AArch64#Scalable_Vector_Extension_(SVE)
+https://arxiv.org/html/2410.08396v1
+
+https://openmetal.io/docs/product-guides/private-cloud/gpu-parallel-computing/
+https://www.sciencedirect.com/science/article/abs/pii/S0031320304000524
+https://store.steampowered.com/hwsurvey/Steam-Hardware-Software-Survey-Welcome-to-Steam
+https://www.nvidia.com/content/gtc-2010/pdfs/2275_gtc2010.pdf
+
+https://www.cs.colostate.edu/~cs675/OpenMPvsThreads.pdf
+https://www.nextplatform.com/2017/01/23/multi-threaded-programming-hand-versus-openmp/

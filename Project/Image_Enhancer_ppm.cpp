@@ -116,7 +116,7 @@ unsigned char* toGrayScale(unsigned char* img, int width, int height, int channe
     return imageGrayScale;
 }
 
-unsigned char* toEnhanced(unsigned char* img, unsigned char* image_greyscale, int width, int height, int channels, double** threshold) {
+unsigned char* toEnhanced(unsigned char* img, unsigned char* image_greyscale, int width, int height, int channels, float** threshold) {
 
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
@@ -127,7 +127,7 @@ unsigned char* toEnhanced(unsigned char* img, unsigned char* image_greyscale, in
     return img;
 }
 
-double calculateMean(const unsigned char* img, int width, int height) {
+float calculateMean(const unsigned char* img, int width, int height) {
     long long sum = 0;
     for (int i = 0; i < width * height; ++i) {
         sum += img[i];
@@ -136,8 +136,8 @@ double calculateMean(const unsigned char* img, int width, int height) {
     return (sum / (width * height));
 }
 
-double calculateStandardDeviation(const unsigned char* img, int width, int height, double** devs) {
-    double mean = calculateMean(img, width, height);
+float calculateStandardDeviation(const unsigned char* img, int width, int height, float** devs) {
+    float mean = calculateMean(img, width, height);
     long long sum_squared_diff = 0.0;
 
     for (int i = 0; i < width; ++i) {
@@ -150,7 +150,7 @@ double calculateStandardDeviation(const unsigned char* img, int width, int heigh
     return sum_squared_diff / (width * height);
 }
 
-double calculateMinDeviation(const unsigned char* img, int width, int height, double mean, double** devs) {
+float calculateMinDeviation(const unsigned char* img, int width, int height, float mean, float** devs) {
 
     int min_deviation = 255; // Maximum possible deviation
 
@@ -163,7 +163,7 @@ double calculateMinDeviation(const unsigned char* img, int width, int height, do
     return min_deviation;
 }
 
-double calculateMaxDeviation(const unsigned char* img, int width, int height, double mean, double** devs) {
+float calculateMaxDeviation(const unsigned char* img, int width, int height, float mean, float** devs) {
 
     int max_deviation = 0;   // Minimum possible deviation
 
@@ -176,7 +176,7 @@ double calculateMaxDeviation(const unsigned char* img, int width, int height, do
     return max_deviation;
 }
 
-double** calculateWindowMean(const unsigned char* img, int width, int height, int windowSize, double** windowMean) {
+float** calculateWindowMean(const unsigned char* img, int width, int height, int windowSize, float** windowMean) {
     int halfWindowSize = windowSize/2;
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
@@ -200,11 +200,11 @@ double** calculateWindowMean(const unsigned char* img, int width, int height, in
     return windowMean;
 }
 
-double** calculateWindowStandardDeviation(const unsigned char* img, int width, int height, int windowSize, double** windowMean, double** windowDev, double** devs) {
+float** calculateWindowStandardDeviation(const unsigned char* img, int width, int height, int windowSize, float** windowMean, float** windowDev, float** devs) {
 
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
-            double sum_squared_diff = 0.0;
+            float sum_squared_diff = 0.0;
             int count = 0;
             int halfWindowSize = windowSize/2;
             int startY = std::max(0, j - halfWindowSize);
@@ -214,7 +214,7 @@ double** calculateWindowStandardDeviation(const unsigned char* img, int width, i
 
             for (int y = startY; y < endY; ++y) {
                 for (int x = startX; x < endX; ++x) {
-                    double diff = devs[x][y] - windowMean[x][y];
+                    float diff = devs[x][y] - windowMean[x][y];
                     sum_squared_diff += diff * diff;
                     ++count;
                 }
@@ -226,7 +226,7 @@ double** calculateWindowStandardDeviation(const unsigned char* img, int width, i
     return windowDev;
 }
 
-double** calculateAdaptiveDeviation(double** windowDev, int width, int height, double minDev, double maxDev, double** adaptiveDev) {
+float** calculateAdaptiveDeviation(float** windowDev, int width, int height, float minDev, float maxDev, float** adaptiveDev) {
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
             adaptiveDev[i][j] = (windowDev[i][j] - minDev) * (maxDev - minDev);
@@ -235,7 +235,7 @@ double** calculateAdaptiveDeviation(double** windowDev, int width, int height, d
     return adaptiveDev;
 }
 
-double** calculateThreshold(double mean, int width, int height, double** meanWindow, double** adaptiveDeviation, double** windowDeviation, double** threshold) {
+float** calculateThreshold(float mean, int width, int height, float** meanWindow, float** adaptiveDeviation, float** windowDeviation, float** threshold) {
     for (int i = 0; i < width; ++i) {
         for (int j = 0; j < height; ++j) {
             threshold[i][j] = meanWindow[i][j] - (meanWindow[i][j] * meanWindow[i][j] - windowDeviation[i][j]) / ((mean + windowDeviation[i][j]) * (adaptiveDeviation[i][j] + windowDeviation[i][j]));
@@ -252,6 +252,7 @@ int main(int argc, char** argv) {
     std::string output = "output/";
     std::string filetype;
     bool verbose = false;
+    int windowSize = 20;
 
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -265,10 +266,12 @@ int main(int argc, char** argv) {
             } else {
                 filetype = output.substr(pos);
             }
-        }
-         if (arg.substr(0, 2) == "-v") {
+        } else if (arg.substr(0, 2) == "-v") {
             verbose = true;
+        } else if (arg.substr(0, 2) == "-w") {
+            windowSize = stoi(arg.substr(3));
         }
+        
     }
 
     if (output == "output/") {
@@ -295,27 +298,25 @@ int main(int argc, char** argv) {
     unsigned char* imageGrayScale = toGrayScale(img, width, height, channels);
     
     // Helpers
-    double mean = calculateMean(imageGrayScale, width, height);
-    
-    int windowSize = 20;
+    float mean = calculateMean(imageGrayScale, width, height);
 
     // dynamic 2d array allocation
-    double** devs = new double*[width];
-    double** windowMean = new double*[width];
-    double** windowDev = new double*[width];
-    double** adaptiveDev = new double*[width];
-    double** threshold = new double*[width];
+    float** devs = new float*[width];
+    float** windowMean = new float*[width];
+    float** windowDev = new float*[width];
+    float** adaptiveDev = new float*[width];
+    float** threshold = new float*[width];
     for (int i = 0; i < width; i++) {
-        devs[i] = new double[height];
-        windowMean[i] = new double[height];
-        windowDev[i] = new double[height];
-        adaptiveDev[i] = new double[height];
-        threshold[i] = new double[height];
+        devs[i] = new float[height];
+        windowMean[i] = new float[height];
+        windowDev[i] = new float[height];
+        adaptiveDev[i] = new float[height];
+        threshold[i] = new float[height];
     }
     
-    double standardDev = calculateStandardDeviation(imageGrayScale, width, height, devs);
-    double minDev = calculateMinDeviation(imageGrayScale, width, height, mean, devs);
-    double maxDev = calculateMaxDeviation(imageGrayScale, width, height, mean, devs);
+    float standardDev = calculateStandardDeviation(imageGrayScale, width, height, devs);
+    float minDev = calculateMinDeviation(imageGrayScale, width, height, mean, devs);
+    float maxDev = calculateMaxDeviation(imageGrayScale, width, height, mean, devs);
     windowMean = calculateWindowMean(imageGrayScale, width, height, windowSize, windowMean);
     windowDev = calculateWindowStandardDeviation(imageGrayScale, width, height, windowSize, windowMean, windowDev, devs);
     adaptiveDev = calculateAdaptiveDeviation(windowDev, width, height, minDev, maxDev, adaptiveDev);

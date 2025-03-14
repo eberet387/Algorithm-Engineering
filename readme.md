@@ -3,6 +3,9 @@
 ## 📂 Week 1-12 Folders  
 Contains answers to the weekly tasks.
 
+I opted to write my answers in simple .txt files,
+so that everything can be graded within a code editor.
+
 ## 📂 Project Paper Folder  
 Includes the **Project Paper** as a PDF.
 

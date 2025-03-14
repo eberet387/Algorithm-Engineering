@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    omp_set_num_threads(1);
+    
     
     // base arguments if not specified
     std::string output = "output/";
@@ -44,11 +44,12 @@ int main(int argc, char** argv) {
     //  -b -> benchmark mode
     //  -n=noiseMultiplier (int) 0-100, however interesting results can be achieved if the noiseMultiplier exceeds 100.
     //  -h -> help
+    //  -s -> serial version
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
 
         if (i == 1 && arg.substr(0, 2) == "-h") {
-            printf("This program helps enhance images for printing / other use.\nUsage: <image_path> {arguments}\n\nArgument List:\n-v   Verbose Mode\n-b   Benchmark Mode\n-o=\"filepath.filetype\" -> specify the output\n-w=windowSize -> specify the window size of nearest pixels that influence the adaptive thresholds (standard: 20)\n-n=noiseMultiplier -> specify a number between 0 and 100 - lower number means less noise\n");
+            printf("This program helps enhance images for printing / other use.\nUsage: <image_path> {arguments}\n\nArgument List:\n-v   Verbose Mode\n-b   Benchmark Mode\n-s  Serial Implementation\n-o=\"filepath.filetype\" -> specify the output\n-w=windowSize -> specify the window size of nearest pixels that influence the adaptive thresholds (standard: 20)\n-n=noiseMultiplier -> specify a number between 0 and 100 - lower number means less noise\n");
             return 1;
         }
         if (arg.substr(0, 2) == "-o") {
@@ -70,8 +71,9 @@ int main(int argc, char** argv) {
         } else if (arg.substr(0, 2) == "-n") {
             noiseMultiplier = std::stoi(arg.substr(3));
             noiseMultiplier /= 100;
+        } else if (arg.substr(0, 2) == "-s") {
+            omp_set_num_threads(1);
         }
-        
     }
 
     // handle no output specification

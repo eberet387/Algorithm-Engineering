@@ -27,6 +27,14 @@ Contains the **Image Enhancement Project**.
    cmake --build .
    ```
 
+### ⚠️ Troubleshooting  
+- **CMake is using MSVC instead of GCC / Clang (MinGW)?**  
+  Force CMake to use G++ by running:  
+  ```sh
+  cmake -B build -G "MinGW Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+  ```
+  Or manually set the CMake env variables to a different compiler.
+
 ### 🚀 Usage  
 Run the Image Enhancer with:  
 ```sh
@@ -36,3 +44,5 @@ For help, use:
 ```sh
 ./main -h
 ```
+Run the unit tests with:
+./catch_tests_image_enhancer

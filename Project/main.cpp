@@ -25,6 +25,8 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    omp_set_num_threads(1);
+    
     // base arguments if not specified
     std::string output = "output/";
     std::string filetype;
@@ -32,7 +34,7 @@ int main(int argc, char** argv) {
     bool benchmark = false;
     double start, end;
     int windowSize = 20;
-    float noiseMultiplier = 0.75;
+    float noiseMultiplier = 0.9;
 
     // argument logic
     // argument list:

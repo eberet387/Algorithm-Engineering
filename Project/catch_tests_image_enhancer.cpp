@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "Image_Enhancer.hpp"
+#include "implementation.hpp"
 
 TEST_CASE("TestImage")
 {

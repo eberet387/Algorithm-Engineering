@@ -44,7 +44,7 @@
 \begin{abstract}
 
 
-This paper deals with the development of a fast, platform-independent program for image enhancement based on local pixel data. The output produces a clean black and white version of the input picture, which results in the appearance of a scanned image. This research paper aims to answer the following question. How can such an algorithm be efficiently implemented in C++, and which computational parameters could be manually tweaked on a picture-by-picture basis, for best results? The implementation of the image enhancement algorithm was done in C++, using OpenMP to parallelize and vectorize specific sections. Bataineh's binarization algorithm served as a foundation a, which was built upon. CMake was used to build and package the software. Testing was done with the help of Catch2. The standalone stb library helped in reading and writing certain image file types. The parallelized version achieves speedups of up to \texttt{12x} over the serial version. These findings demonstrate the importance of writing efficient code for modern multicore CPUs, in the area of image processing.
+This paper deals with the development of a fast, platform-independent program for image enhancement based on local pixel data. The output produces a clean black and white version of the input picture, which results in the appearance of a scanned image. This research paper aims to answer the following question. How can such an algorithm be efficiently implemented in C++, and which computational parameters could be manually tweaked on a picture-by-picture basis, for best results? The implementation of the image enhancement algorithm was done in C++, using OpenMP to parallelize and vectorize specific sections. Bataineh's binarization algorithm served as a foundation, which was built upon. CMake was used to build and package the software. Testing was done with the help of Catch2. The standalone stb library helped in reading and writing certain image file types. The parallelized version achieves speedups of up to \texttt{12x} over the serial version. These findings demonstrate the importance of writing efficient code for modern multicore CPUs, in the area of image processing.
 
 
 
@@ -71,7 +71,7 @@ This paper deals with the development of a fast, platform-independent program fo
 Image enhancement is a broad field of digital image processing that covers a variety of tasks. Although it is mainly used to make images more readable for humans, image enhancement also finds various applications in other areas such as preprocessing for OCR or medical imaging. Traditionally, image enhancement is done serially, wasting a large amount of computational power of modern multicore CPUs. An already existing image enhancing algorithm was modified within the scope of the 2025 Algorithm Engineering Project, using full advantage of SIMD vectorization and parallelization through OpenMP for large performance gains. This particular algorithm uses binarization as a form of enhancement, which is the process of turning pixels either fully white or black depending on different factors.
 
 \subsection{Related Work}
-The algorithm that was implemented and built upon was designed on the basis of the adaptive threshold calculation used for pixel binarization by Bataineh \cite{Bataineh2011}. A different binarization approach is taken by Bradley \cite{Bradley2007}, which will be compared to mine in section 3.
+The algorithm that was implemented and built upon was designed on the basis of the adaptive threshold calculation used for pixel binarization by Bataineh \cite{Bataineh2011}. A different binarization approach is taken by Bradley \cite{Bradley2007}, which will be compared to ours in section 3.
 
 \subsection{Our Contributions}
 Aside from the implementation of the algorithm itself in C++, there were other means necessary like input parsing, output handling, implementing various argument flags for manual parameter tweaking and benchmarking, as well as a lot of fine-tuning, writing unit tests with Catch2 and making the program as portable as possible with the help of CMake.
@@ -192,7 +192,7 @@ It is highly advised to use GNU or Clang as the compiler, as MSVC does not fully
 
 The program is compiled with the following flags:
 \begin{itemize}
-    \item \texttt{-fopenmp -O2 -march=native -mavx -ffast-math -std=c++17} for GNU / Clang
+    \item \texttt{-fopenmp -O2 -march=native -ffast-math -std=c++17} for GNU / Clang
     \item \texttt{/openmp /O2 /arch:AVX /fp:fast /std:c++17} for MSVC
 \end{itemize}
 
@@ -238,7 +238,7 @@ Lastly, figure \ref{fig*:comparison3} shows that the algorithm is fully capable 
 
 
 \subsection{Runtime Comparison}
-Tables~\ref{tab:results1} and~\ref{tab:results2} shows the performance difference of the serial and parallel algorithm based on images 2 and 3, as they have different resolutions. Multiple window sizes were chosen to benchmark, as an increase in window size leads to an exponential increase in computational work. Luckily, in everyday scenarios, e.g. enhancing a picture of a printed email, window sizes can be chosen as small as 10-15.  
+Tables~\ref{tab:results1} and~\ref{tab:results2} show the performance difference of the serial and parallel algorithm based on images 2 and 3, as they have different resolutions. Multiple window sizes were chosen to benchmark, as an increase in window size leads to an exponential increase in computational work. Luckily, in everyday scenarios, e.g. enhancing a picture of a printed email, window sizes can be chosen as small as 10-15.  
 To measure the serial speed the program was executed with the \texttt{-s} flag, ensuring that only the computational power of one thread is being used.
 
 All measurements were taken with the \texttt{-b} benchmarking flag under the same conditions, and the laptop was being charged at all times, making sure that no throttling was present. In both tables~\ref{tab:results1} and~\ref{tab:results2}, we can see a runtime speedup of up to \texttt{11x} on the desktop computer, while the laptop gets a maximum speedup of \texttt{8x} compared to the serial version.\newline 
@@ -247,7 +247,7 @@ On both machines, we can observe a trend that the lowest window size benchmarked
 
 \begin{table}[htbp]
   \caption{Comparison of the running times and speedup of the image enhancement algorithm based on two pictures and three different window sizes per picture. Measurements were taken on a
-desktop pc running Windows 10 Version 22H2 running on an AMD Ryzen 7 5800X (8 cores, 16 threads) CPU.}
+desktop pc running Windows 10 Version 22H2 running on an AMD Ryzen 7 5800X (8 cores, 16 threads) CPU. Speedup is measured as the ratio of the execution time of the serialized version to that of the parallelized version.}
   \label{tab:results1}
 \resizebox{\columnwidth}{!}{
     \begin{tabular}{lcccrr}
@@ -257,11 +257,11 @@ desktop pc running Windows 10 Version 22H2 running on an AMD Ryzen 7 5800X (8 co
       \multirow{3}{*}{Image\_2} & \multirow{3}{*}{1210×904} 
       & 20  & 0.455 & 0.056 & \textbf{8.07} \\
       &  & 50  & 2.703 & 0.249 & \textbf{10.84} \\
-      &  & 100 & 0.916 & 1.031 & \textbf{10.59} \\
+      &  & 100 & 10.916 & 1.031 & \textbf{10.59} \\
       \midrule
       \multirow{3}{*}{Image\_3} & \multirow{3}{*}{1536×2048}  
       & 20  & 1.328 & 0.152 & \textbf{8.75} \\
-      &  & 50  & 7.814 & 0.71 \textbf{11.01} \\
+      &  & 50  & 7.814 & 0.71 & \textbf{11.01} \\
       &  & 100 & 31.977 & 3.038 & \textbf{10.53} \\
       \bottomrule
     \end{tabular}
@@ -271,7 +271,7 @@ desktop pc running Windows 10 Version 22H2 running on an AMD Ryzen 7 5800X (8 co
 
 \begin{table}[htbp]
   \caption{Comparison of the running times and speedup of the image enhancement algorithm based on two pictures and three different window sizes per picture. Measurements were taken on a
-laptop running Windows 11 Version 24H2 running on an Intel Core i5-12500H (12 cores, 16 threads) CPU.}
+laptop running Windows 11 Version 24H2 running on an Intel Core i5-12500H (12 cores, 16 threads) CPU. Speedup is measured as the ratio of the execution time of the serialized version to that of the parallelized version.}
   \label{tab:results2}
 \resizebox{\columnwidth}{!}{
     \begin{tabular}{lcccrr}
@@ -292,10 +292,9 @@ laptop running Windows 11 Version 24H2 running on an Intel Core i5-12500H (12 co
 }
 \end{table}
 
-\section{Conclusions}
+\section{Conclusions and Future Work}
 Based on the runtime benchmark results, the time needed to enhance even a high resolution picture seems reasonable. This is further amplified by the fact that in real-world scenarios, the window size can often be chosen as low as 10-15 without implications. Therefore, the overall image enhancement project can be seen as a success.
 
-\subsection{Future Work}
 A considerable amount of time has been spent researching about ways to measure the noise level of an image, with the end goal of finding a way to implement an automatic estimation for the best noise multiplier and window size parameters per picture. While there are multiple methods to compute an estimation of such noise level, a solution has yet not yet been found to either:
 \begin{enumerate}
     \item approximate good parameters or

@@ -1,28 +1,4 @@
-#ifndef IMAGE_ENHANCER_HPP
-#define IMAGE_ENHANCER_HPP
-
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <array>
-#include <string>
-#include <cmath>
-#include <algorithm>
-
-
-#if defined(__GNUC__) || defined(__clang__)  
-#include <mm_malloc.h>
-#define ALIGNED_ALLOC(alignment, size) _mm_malloc(size, alignment)
-#define ALIGNED_FREE _mm_free
-#elif defined(_MSC_VER)  // Microsoft Visual Studio Compiler
-#include <malloc.h>
-#define ALIGNED_ALLOC(alignment, size) _aligned_malloc(size, alignment)
-#define ALIGNED_FREE _aligned_free
-#else
-#include <cstdlib>
-#define ALIGNED_ALLOC(alignment, size) std::aligned_alloc(alignment, size)
-#define ALIGNED_FREE free
-#endif
+#include "implementation.hpp"
 
 // function to load a PPM image
 unsigned char* load_ppm(const char* filename, int& width, int& height, int& channels) {
@@ -318,4 +294,4 @@ float* calculateThreshold(float mean, int pixelAmount, float* meanWindow,
     }
     return threshold;
 }
-#endif // IMAGE_ENHANCER_HPP
+

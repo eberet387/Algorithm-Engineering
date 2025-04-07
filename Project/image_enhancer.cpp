@@ -13,7 +13,7 @@
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include <algorithm>
-#include "Image_Enhancer.hpp"
+#include "implementation.hpp"
 
 
 

@@ -1,21 +1,19 @@
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 
+
+#include "stb_image.h"
+#include "stb_image_write.h"
+#include "implementation.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <array>
 #include <string>
 #include <cmath>
-#include <cstdlib>
-#include <malloc.h>
-#include <omp.h>
-#include "stb_image.h"
-#include "stb_image_write.h"
 #include <algorithm>
-#include "implementation.hpp"
-
-
+#include <omp.h>
 
 // main function
 int main(int argc, char** argv) {
@@ -45,6 +43,7 @@ int main(int argc, char** argv) {
     //  -n=noiseMultiplier (int) 0-100, however interesting results can be achieved if the noiseMultiplier exceeds 100.
     //  -h -> help
     //  -s -> serial version
+
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
 
@@ -136,11 +135,13 @@ int main(int argc, char** argv) {
 
     // step 8: calculate the average grayscale value of all pixels within a window per pixel
     if (verbose) printf("Calculaitng Window Mean per pixel...\n");
-    float* windowMean = calculateWindowMean(imageGrayScale, width, height, windowSize, windowBorder);
+    //float* windowMean = calculateWindowMean(imageGrayScale, width, height, windowSize, windowBorder);
+    float* windowMean = fastSpatialAveraging(imageGrayScale, width, height, windowSize);
     
     // step 9: calculate the window's standard deviation per pixel
     if (verbose) printf("Calculaitng Window Standard Deviation per pixel...\n");
-    float* windowStandardDev = calculateWindowStandardDeviation(imageGrayScale, width, height, windowSize, windowMean, deviation, windowBorder);
+    float* squaredDiff = calculateWindowSquaredDiff(width, height, windowMean, deviation);
+    float* windowStandardDev = calculateWindowStandardDeviation(imageGrayScale, width, height, windowSize, squaredDiff, windowBorder);
 
     // step 10: calculate an adaptive deviation per pixel
     if (verbose) printf("Calculaitng Adaptive Deviation per pixel...\n");

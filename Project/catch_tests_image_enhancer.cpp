@@ -178,7 +178,8 @@ TEST_CASE("TestImage")
       CHECK(window_mean[24] == bottom_right);
    }
 
-   float* window_standard_deviation = calculateWindowStandardDeviation(img_grayscale, width, height, window_size, window_mean, deviation, window_border);
+   float* squared_diff = calculateWindowSquaredDiff(width, height, window_mean, deviation);
+   float* window_standard_deviation = calculateWindowStandardDeviation(img_grayscale, width, height, window_size, squared_diff, window_border);
 
    SECTION("Test window standard deviation calculation") {
 

@@ -25,18 +25,16 @@ target_link_libraries(image_enhancer_tests PUBLIC catch)
 target_link_libraries(image_enhancer_tests PUBLIC image_enhancer_implementation)
 # Check the compiler being used
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    # GCC/Clang: Use -fopenmp
-    target_compile_options(image_enhancer PRIVATE -fopenmp)
-    target_compile_options(image_enhancer PRIVATE -O2 -march=native -ffast-math -std=c++17)
+    target_compile_options(image_enhancer PUBLIC -fopenmp -O2 -march=native -ffast-math -std=c++17)
 elseif(MSVC)
-    target_compile_options(image_enhancer PRIVATE /openmp)
-    target_compile_options(image_enhancer PRIVATE /O2)  # Equivalent to GCC's -O2 for optimization
-    target_compile_options(image_enhancer PRIVATE /arch:AVX)  # Enable AVX support
-    target_compile_options(image_enhancer PRIVATE /fp:fast)  # Equivalent to GCC's -ffast-math for floating-point math optimization
-    target_compile_options(image_enhancer PRIVATE /std:c++17)  # Enable C++17 standard
+    target_compile_options(image_enhancer PUBLIC /openmp)
+    target_compile_options(image_enhancer PUBLIC /O2)  # Equivalent to GCC's -O2 for optimization
+    target_compile_options(image_enhancer PUBLIC /arch:AVX)  # Enable AVX support
+    target_compile_options(image_enhancer PUBLIC /fp:fast)  # Equivalent to GCC's -ffast-math for floating-point math optimization
+    target_compile_options(image_enhancer PUBLIC /std:c++17)  # Enable C++17 standard
 
     # Disable runtime checks to avoid conflict with /O2
-    target_compile_options(image_enhancer PRIVATE /RTC-)
+    target_compile_options(image_enhancer PUBLIC /RTC-)
 endif()
 
 add_custom_target(copy_tests_folder ALL
@@ -57,8 +55,6 @@ add_custom_target(copy_output_folder ALL
     ${CMAKE_BINARY_DIR}/output
 )
 # create executable with all tests
-#add_executable(image_enhancer_tests catch_image_enhancer.cpp catch_tests_fizzbuzz.cpp)
+#add_executable(image_enhancer_tests catch_image_enhancer.cpp)
 
-# link libraries fizzbuzz and catch to executable
-#target_link_libraries(image_enhancer_tests PRIVATE fizzbuzz PRIVATE catch)
 

@@ -141,7 +141,8 @@ int main(int argc, char** argv) {
     // step 9: calculate the window's standard deviation per pixel
     if (verbose) printf("Calculaitng Window Standard Deviation per pixel...\n");
     float* squaredDiff = calculateWindowSquaredDiff(width, height, windowMean, deviation);
-    float* windowStandardDev = calculateWindowStandardDeviation(imageGrayScale, width, height, windowSize, squaredDiff, windowBorder);
+    //float* windowStandardDev = calculateWindowStandardDeviation(imageGrayScale, width, height, windowSize, squaredDiff, windowBorder);
+    float* windowStandardDev = fastWindowStandardDeviation(width, height, windowSize, squaredDiff);
 
     // step 10: calculate an adaptive deviation per pixel
     if (verbose) printf("Calculaitng Adaptive Deviation per pixel...\n");

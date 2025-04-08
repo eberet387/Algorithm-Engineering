@@ -346,6 +346,80 @@ float* calculateWindowSquaredDiff(int width, int height, float* windowMean, floa
     return squaredDiff;
 }
 
+// Function to apply fast window standard deviation
+float* fastWindowStandardDeviation(int width, int height, int windowSize, float* squaredDiff) {
+    float* windowMean = static_cast<float*>(
+        ALIGNED_ALLOC(64, width * height * sizeof(float))
+    );
+
+    int* average = static_cast<int*>(
+        ALIGNED_ALLOC(64, 255 * width * height * sizeof(int))
+    );
+
+
+    int col_sum[height + windowSize - 2]; // Array to store column sums
+
+    int k = 0;  // Counter to keep track of elements in the window
+    int j = 0;  // Average value index
+
+    // First pass: Compute average values for the sliding window
+    for (int i = 0; i < 255 * windowSize * windowSize; ++i) {
+        if (k == windowSize * windowSize) {
+            k = 0;
+            j = j + 1;
+        }
+        average[i] = j;
+        k = k + 1;
+    }
+
+    // Second pass: Perform sliding window summation and apply averages
+    for (int j = 0; j < height + windowSize - 2; ++j) {
+        col_sum[j] = 0;
+        for (int i = 0; i < windowSize/2; ++i) {
+            col_sum[j] += squaredDiff[(i)* width + j - windowSize/2];
+        }
+    }
+
+    int sum = 0;
+    for (int i = 0; i < windowSize; ++i) {
+        sum += col_sum[i];
+    }
+
+    // Calculate the first column's average
+    windowMean[0] = std::sqrt(average[sum]);
+
+    // Calculate the rest of the columns for the first row
+    for (int col = 1; col < height - 1; ++col) {
+        sum = sum - col_sum[col - 1] + col_sum[col + windowSize - 1];
+        windowMean[col] = std::sqrt(average[sum]);
+    }
+
+    // For the rest of the rows
+    for (int row = 1; row < width - 1; ++row) {
+        for (int j = 0; j < height + windowSize - 2; ++j) {
+            col_sum[j] = col_sum[j] - squaredDiff[(row - 1) * width + j] + squaredDiff[(row + windowSize - 1) * width + j];
+        }
+
+        sum = 0;
+        for (int i = 0; i < windowSize; ++i) {
+            sum += col_sum[i];
+        }
+
+        // First column of the current row
+        sum = std::max(0, sum);
+        windowMean[row * width] = std::sqrt(average[sum]);
+
+        // Rest of the columns of the current row
+        for (int col = 1; col < height - 1; ++col) {
+            sum = sum - col_sum[col - 1] + col_sum[col + windowSize - 1];
+            sum = std::max(0, sum);
+            windowMean[row * width + col] = std::sqrt(average[sum]);
+        }
+    }
+
+    return windowMean;
+}
+
 // function to calculate the standard deviation within window of pixels arround the target pixel
 float* calculateWindowStandardDeviation(const unsigned char* img, int width, int height, int windowSize, 
                                        float* squaredDiff, int* windowBorder) {
